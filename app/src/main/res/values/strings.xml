@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">EntregableTres</string>
+    <string name="facebook_app_id">755803504765004</string>
+    <string name="fb_login_protocol_scheme">fb755803504765004</string>
+    <string name="moma">Museo de las Artes Modernas</string>
+    <string name="title_collapsing">Museo de las Artes Modernas</string>
+    <string name="title_not_collapsing">MOMA</string>
+    <string name="buttom_close">Cerrar</string>
+    <string name="chooserTitle">Abrir en...</string>
+    <string name="nameArtistDetail">Nombre:</string>
+    <string name="nationality_artist_etai">Nacionalidad:</string>
+    <string name="influenced_by_artist_detail">Influenciado por:</string>
+
+</resources>

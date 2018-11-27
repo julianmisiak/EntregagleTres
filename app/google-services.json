@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "997244243057",
+    "firebase_url": "https://fir-databasejm.firebaseio.com",
+    "project_id": "fir-databasejm",
+    "storage_bucket": "fir-databasejm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997244243057:android:951ee251795eb0c4",
+        "android_client_info": {
+          "package_name": "com.example.jmisiak.entregabletres"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997244243057-e85gg81pbkd9uhnb5a443bqbsocdof5j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jmisiak.entregabletres",
+            "certificate_hash": "c97bbb21360159a540ebfd2a5895822d056b9ec5"
+          }
+        },
+        {
+          "client_id": "997244243057-hol714dd1tc2gql34jdd0e70j8d5lsff.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgw2U4IJVHPFz1qf9gQfFaBiK3sS0L9Fc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997244243057-hol714dd1tc2gql34jdd0e70j8d5lsff.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
