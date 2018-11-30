@@ -1,6 +1,5 @@
 package com.example.jmisiak.entregabletres.view.adapter;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,8 +11,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.jmisiak.entregabletres.R;
 import com.example.jmisiak.entregabletres.model.Artwork;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -46,6 +43,7 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ArtworkV
     public void onBindViewHolder(@NonNull ArtworkViewHolder artworkViewHolder, int position) {
         Artwork artwork = artworkList.get(position);
         artworkViewHolder.load(artwork);
+
     }
 
     @Override
@@ -53,7 +51,7 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ArtworkV
         return artworkList.size();
     }
 
-    public interface ArtistDetailListener{
+    public interface ArtistDetailListener {
         void onClickArtwork(Integer artistId, byte[] imageArtworkByte);
     }
 
@@ -76,15 +74,8 @@ public class ArtworkAdapter extends RecyclerView.Adapter<ArtworkAdapter.ArtworkV
         }
 
         public void load(final Artwork artwork) {
-         //   StorageReference imagenReference = raiz.child(artwork.getImage());
-          //  imagenReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            //    @Override
-              //  public void onSuccess(Uri uri) {
-                    Glide.with(itemView.getContext()).load(artwork.getImageByte()).into(imgPictureArtwork);
-                    tvArtistName.setText(artwork.getName());
-            //        artwork.setImageUri(uri);
-       //         }
-     //       });
+            Glide.with(itemView.getContext()).load(artwork.getImageByte()).into(imgPictureArtwork);
+            tvArtistName.setText(artwork.getName());
 
         }
     }

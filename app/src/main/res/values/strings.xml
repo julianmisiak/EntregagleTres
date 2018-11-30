@@ -10,5 +10,7 @@
     <string name="nameArtistDetail">Nombre:</string>
     <string name="nationality_artist_etai">Nacionalidad:</string>
     <string name="influenced_by_artist_detail">Influenciado por:</string>
+    <string name="chat">Sala de chat</string>
+    <string name="only_remove_msj">Solo puedes eliminar tus mensajes</string>
 
 </resources>

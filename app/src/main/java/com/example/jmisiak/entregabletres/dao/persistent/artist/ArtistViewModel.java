@@ -4,9 +4,7 @@ import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 
-import com.example.jmisiak.entregabletres.dao.persistent.artwork.ArtworkRepository;
 import com.example.jmisiak.entregabletres.model.Artist;
-import com.example.jmisiak.entregabletres.model.Artwork;
 
 import java.util.List;
 
@@ -21,7 +19,20 @@ public class ArtistViewModel extends AndroidViewModel {
         mAllArtist = mRepository.getAllArtist();
     }
 
-    public  LiveData<List<Artist>> getAllArtist() { return mAllArtist; }
-    public void insert(Artist artist) { mRepository.insert(artist); }
-    public void delete() { mRepository.delete(); }
+    public LiveData<List<Artist>> getAllArtist() {
+        return mAllArtist;
+    }
+
+    public void insert(Artist artist) {
+        mRepository.insert(artist);
+    }
+
+    public Artist getArtistById(String artistId) {
+        return mRepository.getArtistById(artistId);
+    }
+
+    public Integer countRows() {
+        return mRepository.countRows();
+    }
+
 }

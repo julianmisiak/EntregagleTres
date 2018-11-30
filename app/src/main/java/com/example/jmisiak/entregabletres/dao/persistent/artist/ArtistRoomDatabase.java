@@ -9,17 +9,15 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
 import com.example.jmisiak.entregabletres.model.Artist;
-import com.example.jmisiak.entregabletres.model.Artwork;
 import com.example.jmisiak.entregabletres.service.persistent.ArtistPersistent;
-import com.example.jmisiak.entregabletres.service.persistent.ArtworkPersistent;
 
-@Database(entities = {Artist.class}, version = 11)
+@Database(entities = {Artist.class}, version = 21)
 public abstract class ArtistRoomDatabase extends RoomDatabase {
     public abstract ArtistPersistent artist();
 
     private static volatile ArtistRoomDatabase INSTANCE;
 
-   public static ArtistRoomDatabase getDatabase(final Context context) {
+    public static ArtistRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (ArtistRoomDatabase.class) {
                 if (INSTANCE == null) {
@@ -53,7 +51,6 @@ public abstract class ArtistRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... params) {
-         //  mDao.deleteAll();
             return null;
         }
     }

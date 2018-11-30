@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/backgroud_chat"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".view.ChatActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbarChat"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/colorPrimaryDark"
+        android:fitsSystemWindows="true"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarChat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:fitsSystemWindows="true"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginStart="10dp"
+            app:layout_scrollFlags="enterAlways"
+            app:title="@string/chat">
+
+            <com.github.abdularis.civ.CircleImageView
+                android:id="@+id/imgSession"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginRight="16dp"
+
+                />
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbaarChat"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottom_app_bar">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:src="@drawable/ic_send_white_24dp"
+            android:tint="@android:color/white" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@id/fab">
+
+            <EditText
+                android:id="@+id/input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/white"
+                android:focusedByDefault="true"
+                android:focusable="true"
+                android:textColor="@android:color/white"
+
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_of_messages"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_above="@id/fab"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="75dp"
+                android:layout_marginBottom="46dp"
+                android:divider="@android:color/transparent"
+                android:dividerHeight="16dp"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

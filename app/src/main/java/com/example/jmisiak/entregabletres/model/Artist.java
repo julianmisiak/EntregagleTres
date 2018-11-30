@@ -5,7 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.annotation.NonNull;
 
-import com.google.gson.annotations.SerializedName;
+import com.google.firebase.database.PropertyName;
+
 @Entity(tableName = "ARTIST")
 public class Artist {
     @PrimaryKey
@@ -19,8 +20,8 @@ public class Artist {
     private String nationality;
 
     @ColumnInfo(name = "INFLUENCED_BY")
-    @SerializedName("Influenced_by")
-    private String influencedBy;
+    @PropertyName("Influenced_by")
+    private String Influenced_by;
 
     public Artist() {
     }
@@ -41,20 +42,12 @@ public class Artist {
         return nationality;
     }
 
-
-    public String getInfluencedBy() {
-        return influencedBy;
+    public String getInfluenced_by() {
+        return Influenced_by;
     }
 
-
-    @Override
-    public String toString() {
-        return "Artist{" +
-                "artistId=" + artistId +
-                ", name='" + name + '\'' +
-                ", nationality='" + nationality + '\'' +
-                ", influencedBy='" + influencedBy + '\'' +
-                '}';
+    public void setInfluenced_by(String influenced_by) {
+        Influenced_by = influenced_by;
     }
 
     public void setArtistId(String artistId) {
@@ -65,7 +58,4 @@ public class Artist {
         this.nationality = nationality;
     }
 
-    public void setInfluencedBy(String influencedBy) {
-        this.influencedBy = influencedBy;
-    }
 }

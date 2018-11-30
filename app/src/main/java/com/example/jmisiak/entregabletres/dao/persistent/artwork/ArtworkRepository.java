@@ -27,29 +27,18 @@ public class ArtworkRepository {
         new insertAsyncTask(artworkPersistent).execute(artwork);
     }
 
-    public void update(Artwork artwork) {
-        new insertAsyncTask(artworkPersistent).execute(artwork);
-    }
-
-
-    public void delete() {
-      // artworkPersistent.deleteAll();
-    }
     private static class insertAsyncTask extends AsyncTask<Artwork, Void, Void> {
-
         private ArtworkPersistent mAsyncTaskDao;
 
         insertAsyncTask(ArtworkPersistent dao) {
             mAsyncTaskDao = dao;
         }
 
-
         @Override
         protected Void doInBackground(final Artwork... params) {
-        //    mAsyncTaskDao.deleteAll();
             try {
                 mAsyncTaskDao.insert(params[0]);
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return null;

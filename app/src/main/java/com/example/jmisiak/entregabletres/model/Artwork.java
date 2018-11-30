@@ -2,15 +2,11 @@ package com.example.jmisiak.entregabletres.model;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import java.util.Objects;
-
 @Entity(tableName = "ARTWORK")
-public class Artwork implements Comparable{
+public class Artwork implements Comparable {
     @PrimaryKey(autoGenerate = true)
     private Integer id;
 
@@ -22,12 +18,12 @@ public class Artwork implements Comparable{
 
     @ColumnInfo(name = "NAME")
     private String name;
-    @Ignore
-    private Uri imageUri;
+
     @ColumnInfo(typeAffinity = ColumnInfo.BLOB)
     private byte[] imageByte;
 
-    public Artwork(){}
+    public Artwork() {
+    }
 
     public String getImage() {
         return image;
@@ -51,14 +47,6 @@ public class Artwork implements Comparable{
 
     public void setArtistId(Integer artistId) {
         this.artistId = artistId;
-    }
-
-    public Uri getImageUri() {
-        return imageUri;
-    }
-
-    public void setImageUri(Uri imageUri) {
-        this.imageUri = imageUri;
     }
 
     public byte[] getImageByte() {
@@ -94,11 +82,11 @@ public class Artwork implements Comparable{
     @Override
     public int compareTo(@NonNull Object o) {
         Artwork artwork = (Artwork) o;
-        if(this.equals(artwork)){
-            return  0;
-        }else if(this.getArtistId() < artwork.getArtistId()){
+        if (this.equals(artwork)) {
+            return 0;
+        } else if (this.getArtistId() < artwork.getArtistId()) {
             return -1;
-        }else{
+        } else {
             return 1;
         }
     }

@@ -1,18 +1,19 @@
 package com.example.jmisiak.entregabletres.controller;
 
-import com.example.jmisiak.entregabletres.dao.persistent.artist.ArtistDAO;
+import android.support.v7.app.AppCompatActivity;
+
+import com.example.jmisiak.entregabletres.dao.persistent.ArtistDAO;
 import com.example.jmisiak.entregabletres.model.Artist;
 import com.example.jmisiak.entregabletres.util.ResultListener;
-import com.example.jmisiak.entregabletres.view.MainActivity;
 
 import java.util.List;
 
 public class ArtistController {
     private ArtistDAO dao;
 
-    private MainActivity activity;
+    private AppCompatActivity activity;
 
-    public ArtistController(MainActivity activity) {
+    public ArtistController(AppCompatActivity activity) {
         this.activity = activity;
         dao = new ArtistDAO(activity);
     }
@@ -27,36 +28,18 @@ public class ArtistController {
 
     }
 
-    public void getArtistListDatabase(final ResultListener<List<Artist>> listenerView) {
-
-        dao.getArtistListDatabase(new ResultListener<List<Artist>>() {
-            @Override
-            public void finish(List<Artist> result) {
-                listenerView.finish(result);
-            }
-        }, activity);
+    public Artist getArtistById(String artistId) {
+        return dao.getArtistById(artistId);
     }
 
-    public void insertArtistList(List<Artist> artistList) {
-        dao.insertArtistList(artistList);
-    }
-
-    public void getArtistList(final ResultListener<List<Artist>> listenerView) {
-        getArtistListDatabase(new ResultListener<List<Artist>>() {
-            @Override
-            public void finish(List<Artist> result) {
-                if (result.isEmpty()) {
-                    getArtistFirebase(new ResultListener<List<Artist>>() {
-                        @Override
-                        public void finish(List<Artist> result) {
-                            dao.insertArtistList(result);
-                            listenerView.finish(result);
-                        }
-                    });
-                } else {
-                    listenerView.finish(result);
+    public void checkAndInsertArtistIntoDatabase() {
+        if (dao.countRows() == 0) {
+            getArtistFirebase(new ResultListener<List<Artist>>() {
+                @Override
+                public void finish(List<Artist> result) {
+                    dao.insertArtistList(result);
                 }
-            }
-        });
+            });
+        }
     }
 }

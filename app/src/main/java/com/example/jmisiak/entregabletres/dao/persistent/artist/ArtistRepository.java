@@ -4,11 +4,8 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
-import com.example.jmisiak.entregabletres.dao.persistent.artwork.ArtworkRoomDatabase;
 import com.example.jmisiak.entregabletres.model.Artist;
-import com.example.jmisiak.entregabletres.model.Artwork;
 import com.example.jmisiak.entregabletres.service.persistent.ArtistPersistent;
-import com.example.jmisiak.entregabletres.service.persistent.ArtworkPersistent;
 
 import java.util.List;
 
@@ -30,27 +27,23 @@ public class ArtistRepository {
         new insertAsyncTask(artistPersistent).execute(artist);
     }
 
-    public void update(Artist artist) {
-        new insertAsyncTask(artistPersistent).execute(artist);
+    public Artist getArtistById(String artistId) {
+        return artistPersistent.getArtistById(artistId);
     }
 
-
-    public void delete() {
-        // artworkPersistent.deleteAll();
+    public Integer countRows() {
+        return artistPersistent.countRows();
     }
 
     private static class insertAsyncTask extends AsyncTask<Artist, Void, Void> {
-
         private ArtistPersistent mAsyncTaskDao;
 
         insertAsyncTask(ArtistPersistent dao) {
             mAsyncTaskDao = dao;
         }
 
-
         @Override
         protected Void doInBackground(final Artist... params) {
-            //    mAsyncTaskDao.deleteAll();
             try {
                 mAsyncTaskDao.insert(params[0]);
             } catch (Exception e) {
@@ -59,4 +52,6 @@ public class ArtistRepository {
             return null;
         }
     }
+
+
 }

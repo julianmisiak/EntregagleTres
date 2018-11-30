@@ -23,4 +23,5 @@ public interface ArtworkPersistent {
 
     @Query("SELECT * from ARTWORK")
     LiveData<List<Artwork>> getAllArtwork();
+
 }

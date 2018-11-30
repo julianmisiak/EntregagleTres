@@ -24,4 +24,11 @@ public interface ArtistPersistent {
 
     @Query("SELECT * from ARTIST")
     LiveData<List<Artist>> getAllArtist();
+
+    @Query("SELECT * from ARTIST WHERE artistId = :artistId")
+    Artist getArtistById(String artistId);
+
+    @Query("SELECT count(1) from ARTIST")
+    Integer countRows();
+
 }

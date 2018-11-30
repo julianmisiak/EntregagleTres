@@ -7,6 +7,19 @@
     android:orientation="vertical"
     tools:context=".view.LoginActivity">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/moma_imagen" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Es obligatorio acceder con Facebook"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+
     <com.facebook.login.widget.LoginButton
         android:id="@+id/login_button"
         android:layout_width="wrap_content"

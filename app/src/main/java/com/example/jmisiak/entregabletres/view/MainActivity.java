@@ -14,8 +14,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +31,7 @@ import com.example.jmisiak.entregabletres.model.Artist;
 import com.example.jmisiak.entregabletres.model.Artwork;
 import com.example.jmisiak.entregabletres.util.ResultListener;
 import com.example.jmisiak.entregabletres.view.adapter.ArtworkAdapter;
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -49,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
     private ArtistController controllerArtist;
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
+    private ProgressBar pbArtwork;
+    private LinearLayout artworkLinearLayout;
 
-    private FirebaseStorage mStorage;
-    private StorageReference raizStorage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,18 +64,23 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
         setContentView(R.layout.activity_main);
         collapsingToolbarLayout = findViewById(R.id.collapsingToolbarMainActivity);
         appBarLayout = findViewById(R.id.appbarMainAcivity);
-        controllerArtwork = new ArtworkController();
+        controllerArtwork = new ArtworkController(this);
         controllerArtist = new ArtistController(this);
+        pbArtwork = findViewById(R.id.pbArtwork);
+        artworkLinearLayout = findViewById(R.id.artworkLinearLayout);
+
         loadArtworkRecyclerView();
 
         ImageButton btnLogout = findViewById(R.id.logout);
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FacebookSdk.sdkInitialize(getApplicationContext());
                 FirebaseAuth.getInstance().signOut();
                 LoginManager.getInstance().logOut();
                 Intent intent = new Intent(MainActivity.this, LoginActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -85,15 +95,19 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
 
 
         appBarLayout.addOnOffsetChangedListener(appBarlistener);
+        checkAndInsertArtistIntoDatabase();
 
-        mStorage = FirebaseStorage.getInstance();
-        raizStorage = mStorage.getReference();
+        FloatingActionButton btnChat = findViewById(R.id.btnChat);
+        btnChat.setOnClickListener(chatListener);
+    }
+
+    private void checkAndInsertArtistIntoDatabase() {
+        controllerArtist.checkAndInsertArtistIntoDatabase();
     }
 
 
     private void loadArtworkRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.rvArtwork);
-        recyclerView.setHasFixedSize(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(MainActivity.this, 2);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -101,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
         ArtworkAdapter adapter = new ArtworkAdapter(new ArrayList<Artwork>(), R.layout.artwork_cardview, this);
         recyclerView.setAdapter(adapter);
 
+        int resId = R.anim.grid_layout_animation_from_bottom;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(MainActivity.this, resId);
+        recyclerView.setLayoutAnimation(animation);
         loadAdapterData(adapter);
     }
 
@@ -108,30 +125,24 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
         controllerArtwork.getArtworkListDatabase(new ResultListener<List<Artwork>>() {
             @Override
             public void finish(List<Artwork> result) {
-                if(!result.isEmpty()){
+                if (!result.isEmpty()) {
+                    pbArtwork.setVisibility(View.GONE);
+                    artworkLinearLayout.setVisibility(View.VISIBLE);
                     adapter.setArtworkList(result);
-                }else{
+
+                } else {
                     controllerArtwork.getArtworkList(new ResultListener<List<Artwork>>() {
                         @Override
                         public void finish(List<Artwork> result) {
-                            controllerArtwork.insertArtwork(result, getApplicationContext());
+                            controllerArtwork.insertArtwork(result);
+                            pbArtwork.setVisibility(View.GONE);
+                            artworkLinearLayout.setVisibility(View.VISIBLE);
                             adapter.setArtworkList(result);
                         }
                     });
                 }
             }
-        }, this);
-/*
-
-        controller.getArtworkList(new ResultListenerDatabase<List<Artwork>>() {
-            @Override
-            public void finish(List<Artwork> result) {
-                adapter.setArtworkList(result);
-            }
-
-        }, this);
-
-*/
+        });
     }
 
     @Override
@@ -146,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
         }
 
     }
-
 
     AppBarLayout.OnOffsetChangedListener appBarlistener = new AppBarLayout.OnOffsetChangedListener() {
         @Override
@@ -184,23 +194,14 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
         final TextView tvInfluencedByArtistDetail = dialogView.findViewById(R.id.tvInfluencedByArtistDetail);
 
         loadDataArtistDetail(artistId, imageArtworByte, imgArtistDetailArtwork, tvNameArtistDetail, tvNationalityArtistDetail, tvInfluencedByArtistDetail);
-
     }
 
     private void loadDataArtistDetail(final Integer artistId, final byte[] imageArtworByte, final ImageView imgArtistDetailArtwork, final TextView tvNameArtistDetail, final TextView tvNationalityArtistDetail, final TextView tvInfluencedByArtistDetail) {
-        controllerArtist.getArtistList(new ResultListener<List<Artist>>() {
-            @Override
-            public void finish(List<Artist> result) {
-                for(Artist artist : result){
-                    if (artist.getArtistId().equals(artistId.toString())) {
-                        Glide.with(getApplicationContext()).load(imageArtworByte).into(imgArtistDetailArtwork);
-                        tvNameArtistDetail.setText(artist.getName());
-                        tvNationalityArtistDetail.setText(artist.getNationality());
-                        tvInfluencedByArtistDetail.setText(artist.getInfluencedBy());
-                    }
-                }
-            }
-        });
+        final Artist artist = controllerArtist.getArtistById(artistId.toString());
+        Glide.with(getApplicationContext()).load(imageArtworByte).into(imgArtistDetailArtwork);
+        tvNameArtistDetail.setText(artist.getName());
+        tvNationalityArtistDetail.setText(artist.getNationality());
+        tvInfluencedByArtistDetail.setText(artist.getInfluenced_by());
     }
 
 
@@ -222,11 +223,11 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
 
                     Uri uriTemporal = Uri.fromFile(new File(uri.getPath()));
                     String extension = uriTemporal.getLastPathSegment().substring(uriTemporal.getLastPathSegment().indexOf("."));
-
+                    FirebaseStorage mStorage = FirebaseStorage.getInstance();
                     StorageReference raiz = mStorage.getReference();
                     Date time = Calendar.getInstance().getTime();
-                    StorageReference nuevaFoto = raiz.child("artistpaints").child(time + extension);
-                    UploadTask uploadTask = nuevaFoto.putFile(uri);
+                    StorageReference pictureNew = raiz.child("fotos").child(time + extension);
+                    UploadTask uploadTask = pictureNew.putFile(uri);
 
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -236,7 +237,6 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(MainActivity.this, "Éxito", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -249,5 +249,14 @@ public class MainActivity extends AppCompatActivity implements ArtworkAdapter.Ar
             }
         });
     }
+
+
+    View.OnClickListener chatListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+            startActivity(intent);
+        }
+    };
 
 }

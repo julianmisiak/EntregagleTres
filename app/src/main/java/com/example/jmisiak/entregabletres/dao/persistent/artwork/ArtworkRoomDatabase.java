@@ -11,13 +11,13 @@ import android.support.annotation.NonNull;
 import com.example.jmisiak.entregabletres.model.Artwork;
 import com.example.jmisiak.entregabletres.service.persistent.ArtworkPersistent;
 
-@Database(entities = {Artwork.class}, version = 11)
+@Database(entities = {Artwork.class}, version = 21)
 public abstract class ArtworkRoomDatabase extends RoomDatabase {
     public abstract ArtworkPersistent artwork();
 
     private static volatile ArtworkRoomDatabase INSTANCE;
 
-   public static ArtworkRoomDatabase getDatabase(final Context context) {
+    public static ArtworkRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (ArtworkRoomDatabase.class) {
                 if (INSTANCE == null) {
@@ -44,7 +44,6 @@ public abstract class ArtworkRoomDatabase extends RoomDatabase {
     };
 
     private static class PopulateDbAsync extends AsyncTask<Void, Void, Void> {
-
         private final ArtworkPersistent mDao;
 
         PopulateDbAsync(ArtworkRoomDatabase db) {
@@ -53,7 +52,6 @@ public abstract class ArtworkRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... params) {
-         //  mDao.deleteAll();
             return null;
         }
     }
